@@ -1,0 +1,35 @@
+.search{
+    max-width: 200px;
+}
+.sbtn{
+    background-color: blue;
+}
+.wCard{
+    background-color: blue;
+    height: 10em;
+    max-width: 7em;
+    color: white;
+}
+.input-group{
+    margin: 7px;
+}
+.leftContainer{
+    float:left;
+    margin-left: 5%;;
+}
+.rightContainer{
+    font-size: 27px;
+}
+.cBodyRight{
+    width: 20em;
+    margin-bottom: 15px;
+}
+.card-deck{
+    margin-top: 15px;
+}
+.cbtn{
+    padding: 14px 39px 14px 39px;
+    min-width: 40px;
+    background-color: rgb(250, 243, 230);
+    color: black;
+}

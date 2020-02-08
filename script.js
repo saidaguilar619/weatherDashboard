@@ -1,0 +1,47 @@
+const apiKey = "e56a9eded7bce5b55a739696279fa85f";
+let currentCity = "San Diego";
+const currentWeatherURL = "http://api.openweathermap.org/data/2.5/weather?q=" + currentCity + "&units=imperial&APPID=" + apiKey;
+const currentForecastURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + currentCity + "&units=imperial&APPID=" + apiKey;
+// const currentDate = moment().format("MMMM Do, YYYY");
+$(".cbtn").on("click", function(){
+    currentCity = $(this).text();
+    getCurrentWeather(currentCity);
+})
+$(".sbtn").on("click", function(){
+    currentCity = $(".search").val();
+    getCurrentWeather(currentCity);
+})
+
+
+
+
+function displayCurrentWeather(weatherData) {
+    $(".city").text(weatherData.name);
+    $(".temp").text("Temp: " + weatherData.main.temp);
+    $(".humidity").text("Humidity: " + weatherData.main.humidity + "%");
+    $(".windSpeed").text("Wind: " + weatherData.wind.speed + " MPH");
+}
+function getCurrentWeather(city){
+        const currentWeatherURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&APPID=" + apiKey;
+        $.get(currentWeatherURL)
+        .then(function(response) {
+             displayCurrentWeather(response);
+             lon = response.coord.lon;
+             lat = response.coord.lat;
+             getUVIndex(lon, lat);
+            // const icon = "http://openweathermap.org/img/wn/" + res.weather[0].icon + "@2x.png"
+            // $(".current-weather-icon").attr("src", icon)
+            // console.log(icon)
+        });
+}
+function getUVIndex(longitude, latitude) {
+    lon = longitude;
+    lat = latitude;
+    const currentUVIURL = "http://api.openweathermap.org/data/2.5/uvi/forecast?appid=" +apiKey+ "&lat=" + lat + "&lon=" + lon+ "&cnt=1";
+    $.get(currentUVIURL)
+    .then(function(response) {  
+        const uvIndex = response[0].value;
+        $(".UVIndex").text("UV Index: " +uvIndex);
+    });
+}
+getCurrentWeather(currentCity);
