@@ -6,13 +6,16 @@ let searchArr = JSON.parse(localStorage.getItem('searchArray'));
 if(searchArr == null){
     searchArr = [];
 }
-const currentDate = moment().format("MM-DD-YYYY");
-$(".date").text("(" + currentDate + ")");
+const currentDate = moment().format("ddd (M-D)");
+
+$(".date").text(currentDate);
+
 $(".cbtn").on("click", function(){
     currentCity = $(this).text();
     getCurrentWeather(currentCity);
-   
+    getForecast(currentCity);
 })
+
 $(".sbtn").on("click", function(){
     currentCity = $(".search").val();
     getCurrentWeather(currentCity);
@@ -25,6 +28,7 @@ $(".sbtn").on("click", function(){
     searchArr.push(currentCity); 
     localStorage.setItem("searchArray",JSON.stringify(searchArr));
 })
+
 function setSearch(searchHistory){
     if(searchHistory.length !== 0){
         $(".btn-group-vertical").append("Search History:");
@@ -38,14 +42,18 @@ function setSearch(searchHistory){
         } 
     }
 }
+
 function displayCurrentWeather(weatherData) {
     $(".city").text(weatherData.name);
     $(".temp").text("Temp: " + weatherData.main.temp + " F");
     $(".humidity").text("Humidity: " + weatherData.main.humidity + "%");
     $(".windSpeed").text("Wind: " + weatherData.wind.speed + " MPH");
 }
+
 function getCurrentWeather(city){
         const currentWeatherURL = "HTTPS://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&APPID=" + apiKey;
+        getForecast(city);
+
         $.get(currentWeatherURL)
         .then(function(response) {
              displayCurrentWeather(response);
@@ -54,6 +62,7 @@ function getCurrentWeather(city){
              getUVIndex(lon, lat);
         });
 }
+
 function getUVIndex(longitude, latitude) {
     lon = longitude;
     lat = latitude;
@@ -64,7 +73,10 @@ function getUVIndex(longitude, latitude) {
         $(".UVIndex").text("UV Index: " +uvIndex);
     });
 }
-function getForecast(){
+
+function getForecast(city1){
+    console.log(city1);
+    const currentForecastURL = "HTTPS://api.openweathermap.org/data/2.5/forecast?q=" + city1 + "&units=imperial&APPID=" + apiKey;
     $.get(currentForecastURL)
     .then(function(response) {  
         for(let i = 0; i< 5;i++){
@@ -73,7 +85,7 @@ function getForecast(){
             let tempString = ".temp" + i;
             let humidString = ".humidity" + i;
             let dateString = ".date" + i;
-            $(dateString).text(moment().add(i, 'd').format("MM-DD-YYYY"));
+            $(dateString).text(moment().add(i + 1, 'd').format("ddd(M-D)"));
             $(tempString ).text("Temp: " + temp + " F");
             $(humidString ).text("Humidity: " + humid + "%");
         }
@@ -82,4 +94,4 @@ function getForecast(){
 
 setSearch(searchArr);
 getCurrentWeather(currentCity);
-getForecast();
+getForecast(currentCity);
