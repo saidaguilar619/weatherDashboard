@@ -6,8 +6,8 @@ let searchArr = JSON.parse(localStorage.getItem('searchArray'));
 if(searchArr == null){
     searchArr = [];
 }
-console.log(searchArr);
-// const currentDate = moment().format("MMMM Do, YYYY");
+const currentDate = moment().format("MM-DD-YYYY");
+$(".date").text("(" + currentDate + ")");
 $(".cbtn").on("click", function(){
     currentCity = $(this).text();
     getCurrentWeather(currentCity);
@@ -21,8 +21,7 @@ $(".sbtn").on("click", function(){
         currentCity = $(this).text();
         getCurrentWeather(currentCity);
     })
-    $(".btn-group-vertical").append(newBtn);
-    console.log(searchArr);
+    $(".btn-group-vertical").append(newBtn)
     searchArr.push(currentCity); 
     localStorage.setItem("searchArray",JSON.stringify(searchArr));
 })
@@ -41,7 +40,7 @@ function setSearch(searchHistory){
 }
 function displayCurrentWeather(weatherData) {
     $(".city").text(weatherData.name);
-    $(".temp").text("Temp: " + weatherData.main.temp);
+    $(".temp").text("Temp: " + weatherData.main.temp + " F");
     $(".humidity").text("Humidity: " + weatherData.main.humidity + "%");
     $(".windSpeed").text("Wind: " + weatherData.wind.speed + " MPH");
 }
@@ -53,9 +52,6 @@ function getCurrentWeather(city){
              lon = response.coord.lon;
              lat = response.coord.lat;
              getUVIndex(lon, lat);
-            // const icon = "http://openweathermap.org/img/wn/" + res.weather[0].icon + "@2x.png"
-            // $(".current-weather-icon").attr("src", icon)
-            // console.log(icon)
         });
 }
 function getUVIndex(longitude, latitude) {
@@ -68,20 +64,22 @@ function getUVIndex(longitude, latitude) {
         $(".UVIndex").text("UV Index: " +uvIndex);
     });
 }
-// function getForecast(){
-//     $.get(currentForecastURL)
-//     .then(function(response) {  
-//         for(let i = 0; i< 5;i++){
-//             let temp = response[0].value;
-//             let humid = response[0].value;
-//             let tempString = "temp" + i;
-//             let humidString = "humidity" + i;
-//             // console.log(response);
-//             // $(".UVIndex").text("UV Index: " +uvIndex);
-//         }
-//     });
-// }
+function getForecast(){
+    $.get(currentForecastURL)
+    .then(function(response) {  
+        for(let i = 0; i< 5;i++){
+            let temp = response.list[i].main.temp;
+            let humid = response.list[i].main.humidity;
+            let tempString = ".temp" + i;
+            let humidString = ".humidity" + i;
+            let dateString = ".date" + i;
+            $(dateString).text(moment().add(i, 'd').format("MM-DD-YYYY"));
+            $(tempString ).text("Temp: " + temp + " F");
+            $(humidString ).text("Humidity: " + humid + "%");
+        }
+    });
+}
 
 setSearch(searchArr);
 getCurrentWeather(currentCity);
-// getForecast();
+getForecast();
