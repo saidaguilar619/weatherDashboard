@@ -1,8 +1,15 @@
+.mainCard{
+    background-color: rgb(180, 198, 250);
+}
+.rightCard{
+    border: black solid 2px;
+}
 .search{
     max-width: 200px;
 }
 .sbtn{
     background-color: blue;
+    /* background-image: url("https://cdn1.vectorstock.com/i/1000x1000/60/55/search-icon-magnifier-icon-vector-20716055.jpg"); */
 }
 .wCard{
     background-color: blue;
@@ -15,7 +22,7 @@
 }
 .leftContainer{
     float:left;
-    margin-left: 5%;;
+    margin-left: 5%;
 }
 .rightContainer{
     font-size: 27px;
@@ -32,4 +39,8 @@
     min-width: 40px;
     background-color: rgb(250, 243, 230);
     color: black;
+}
+.UVIndex{
+    width: 15rem;
+    border: black solid 1px;
 }

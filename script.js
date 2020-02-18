@@ -44,22 +44,24 @@ function setSearch(searchHistory){
 }
 
 function displayCurrentWeather(weatherData) {
+    let icon = "http://openweathermap.org/img/w/" + weatherData.weather[0].icon + ".png";
     $(".city").text(weatherData.name);
     $(".temp").text("Temp: " + weatherData.main.temp + " F");
     $(".humidity").text("Humidity: " + weatherData.main.humidity + "%");
     $(".windSpeed").text("Wind: " + weatherData.wind.speed + " MPH");
+    $(".icon").attr("src", icon);
 }
 
 function getCurrentWeather(city){
         const currentWeatherURL = "HTTPS://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&APPID=" + apiKey;
         getForecast(city);
-
         $.get(currentWeatherURL)
         .then(function(response) {
              displayCurrentWeather(response);
              lon = response.coord.lon;
              lat = response.coord.lat;
              getUVIndex(lon, lat);
+             console.log(response);
         });
 }
 
@@ -71,23 +73,35 @@ function getUVIndex(longitude, latitude) {
     .then(function(response) {  
         const uvIndex = response[0].value;
         $(".UVIndex").text("UV Index: " +uvIndex);
+        if (response[0].value < 2){
+            $(".UVIndex").css("background-color", "green");
+        }else if(response[0].value >= 2 && response[0].value < 5 ){
+            $(".UVIndex").css("background-color", "yellow");
+        }else if(response[0].value >= 5 && response[0].value < 7 ){
+            $(".UVIndex").css("background-color", "orange");
+        }else{
+            $(".UVIndex").css("background-color", "red");
+        }
     });
 }
 
 function getForecast(city1){
-    console.log(city1);
     const currentForecastURL = "HTTPS://api.openweathermap.org/data/2.5/forecast?q=" + city1 + "&units=imperial&APPID=" + apiKey;
     $.get(currentForecastURL)
     .then(function(response) {  
+        console.log(response);
         for(let i = 0; i< 5;i++){
+            let iconURL = "http://openweathermap.org/img/w/" + response.list[0].weather[0].icon + ".png";
             let temp = response.list[i].main.temp;
             let humid = response.list[i].main.humidity;
             let tempString = ".temp" + i;
             let humidString = ".humidity" + i;
             let dateString = ".date" + i;
+            let icons = ".icon" + i;
             $(dateString).text(moment().add(i + 1, 'd').format("ddd(M-D)"));
             $(tempString ).text("Temp: " + temp + " F");
             $(humidString ).text("Humidity: " + humid + "%");
+            $(icons).attr("src", iconURL);
         }
     });
 }
