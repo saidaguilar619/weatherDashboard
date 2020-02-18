@@ -16,6 +16,7 @@
     height: 10em;
     max-width: 9em;
     color: white;
+    min-width: 6em;
 }
 .input-group{
     margin: 7px;
@@ -23,6 +24,8 @@
 .leftContainer{
     float:left;
     margin-left: 5%;
+    margin-right: 7px;
+    min-width: 7rem;
 }
 .rightContainer{
     font-size: 27px;
