@@ -61,7 +61,6 @@ function getCurrentWeather(city){
              lon = response.coord.lon;
              lat = response.coord.lat;
              getUVIndex(lon, lat);
-             console.log(response);
         });
 }
 
@@ -89,7 +88,6 @@ function getForecast(city1){
     const currentForecastURL = "HTTPS://api.openweathermap.org/data/2.5/forecast?q=" + city1 + "&units=imperial&APPID=" + apiKey;
     $.get(currentForecastURL)
     .then(function(response) {  
-        console.log(response);
         for(let i = 0; i< 5;i++){
             let iconURL = "http://openweathermap.org/img/w/" + response.list[0].weather[0].icon + ".png";
             let temp = response.list[i].main.temp;
