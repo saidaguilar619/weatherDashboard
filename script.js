@@ -7,7 +7,7 @@ if(searchArr == null){
     searchArr = [];
 }
 const currentDate = moment().format("ddd (M-D)");
-
+//check
 $(".date").text(currentDate);
 
 $(".cbtn").on("click", function(){
